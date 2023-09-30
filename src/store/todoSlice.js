@@ -1,17 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { v4 as uuidv4 } from "uuid";
-import { addDays } from "date-fns";
 const todoSlice = createSlice({
   name: "todo",
   initialState: {
-    tasks: [
-      {
-        id: uuidv4(),
-        body: "example",
-        isDone: false,
-        deadLine: addDays(new Date(), 1),
-      },
-    ],
+    tasks: [],
     mode: "all",
     amount: 5,
   },
@@ -20,33 +12,33 @@ const todoSlice = createSlice({
       const { body, deadLine } = action.payload;
       const newTask = {
         id: uuidv4(),
-        body,
         isDone: false,
-        deadLine,
+        body: body,
+        deadLine: deadLine,
       };
-      state.tasks.pushO(newTask);
+      state.tasks.push(newTask);
     },
     deleteTask(state, action) {
       const { id } = action.payload;
       state.tasks = state.tasks.filter((task) => id !== task.id);
     },
-    isDOneTask(state, action) {
+    setDoneTask(state, action) {
       const { id } = action.payload;
       state.tasks = state.tasks.map((task) =>
         id === task.id ? { ...task, isDone: !task.isDone } : task
       );
     },
-    steMode(state, action) {
+    setMode(state, action) {
       const { mode } = action.payload;
       state.mode = mode;
     },
-    steAmount(state, action) {
+    setAmount(state, action) {
       const { amount } = action.payload;
       state.amount = amount;
     },
   },
 });
 
-export const { createTask, deleteTask, isDOneTask, steMode } =
+export const { createTask, deleteTask, setDoneTask, setMode } =
   todoSlice.actions;
 export default todoSlice.reducer;
